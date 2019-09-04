@@ -1,7 +1,7 @@
 /**
  * Page Builder Utils
  */
-const Util = {
+export class Util {
 
 	/**
 	 * Function todo js templating
@@ -10,7 +10,7 @@ const Util = {
 	 * $.supplant(element, json)
 	 * 
 	 */
-	supplant(template, json) {
+	static supplant(template, json) {
 		if (template && template.nodeType === Node.ELEMENT_NODE) {
 			template = template.innerHTML;
 		}
@@ -68,9 +68,9 @@ const Util = {
 
 		code += 'return r.join("");';
 		return new Function(' with (this) { ' + code.replace(/[\r\t\n]/g, '') + '}').apply(json);
-	},
+	}
 
-	formToJSON(form) {
+	static formToJSON(form) {
 		var elements = {};
 		var $form = $(form);
 
@@ -93,9 +93,9 @@ const Util = {
 		});
 
 		return elements;
-	},
+	}
 
-	formFromJSON(form, data) {
+	static formFromJSON(form, data) {
 		var $form = $(form);
 
 		$.each(data, function (key, value) {
@@ -110,20 +110,20 @@ const Util = {
 				$element.val(value);
 			}
 		});
-	},
+	}
 
 
-	hyphenToCamelCase(hyphen) {
+	static hyphenToCamelCase(hyphen) {
 		return hyphen.replace(/-([a-z])/g, function (match) {
 			return match[1].toUppercase();
 		});
-	},
+	}
 
-	camelCaseToHyphen(camelCase) {
+	static camelCaseToHyphen(camelCase) {
 		return camelCase.replace(/[A-Z]/g, '-$1').toLowerCase();
-	},
+	}
 
-	rgb2hex(rgb) {
+	static rgb2hex(rgb) {
 		if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
 
 		rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -134,9 +134,9 @@ const Util = {
 			return ("0" + parseInt(x).toString(16)).slice(-2);
 		}
 		return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-	},
+	}
 
-	genId(length) {
+	static genId(length) {
 		length = length ? length : 8;
 		var result = '';
 		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -148,5 +148,3 @@ const Util = {
 	}
 
 }
-
-export default Util;
