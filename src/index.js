@@ -1,7 +1,7 @@
 /**
  * Page Builder Utils
  */
-export class Util {
+export default class Util {
 
 	/**
 	 * Function todo js templating
