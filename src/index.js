@@ -79,16 +79,18 @@ const Util = {
 			var name = $element.attr('name')
 			var type = $element.attr('type')
 			if (name) {
-				var $value;
+				var value;
 				if (type == 'radio') {
-					$value = $('input[name=' + name + ']:checked', $form).val();
+					value = $('input[name=' + name + ']:checked', $form).val();
 				} else if (type == 'checkbox') {
-					$value = $element.is(':checked');
+					value = $element.is(':checked');
 				} else {
-					$value = $element.val();
+					value = $element.val();
+					
+					value = this.isJsonString(value) ? JSON.parse(value) : value;
 				}
 
-				elements[$element.attr('name')] = $value
+				elements[$element.attr('name')] = value
 			}
 		});
 
@@ -125,7 +127,15 @@ const Util = {
 		});
 	},
 
-
+	isJsonString(str) {
+	    try {
+	        JSON.parse(str);
+	    } catch (e) {
+	        return false;
+	    }
+	    return true;
+	},
+	
 	hyphenToCamelCase(hyphen) {
 		return hyphen.replace(/-([a-z])/g, function (match) {
 			return match[1].toUppercase();
