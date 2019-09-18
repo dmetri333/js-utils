@@ -100,15 +100,28 @@ const Util = {
 
 		$.each(data, function (key, value) {
 			var $element = $('[name="' + key + '"]', $form);
-			var type = $element.first().attr('type');
 
-			if (type == 'radio') {
-				$('[name="' + key + '"][value="' + value + '"]').prop('checked', true);
-			} else if (type == 'checkbox' && (value == true || value == 'true')) {
-				$('[name="' + key + '"]').prop('checked', true);
-			} else {
-				$element.val(value);
+			if ($element.length > 0) {
+				var type = $element.first().attr('type');
+				if (type == 'radio') {
+					$('[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+				} else if (type == 'checkbox' && (value == true || value == 'true')) {
+					$('[name="' + key + '"]').prop('checked', true);
+				} else {
+					$element.val(value);
+				}
+			
+				return;
 			}
+			
+			var $smartElement = $('[data-name="' + key + '"]', $form);
+			if ($smartElement.length > 0) {
+				value = typeof value === 'object' ? JSON.stringify(value) : value;
+				$element.attr('data-value', value);
+				
+				return;
+			}
+			
 		});
 	},
 
