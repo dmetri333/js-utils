@@ -1,6 +1,6 @@
 {
   "name": "@foragefox/page-builder-util",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Util functions used by the page builder",
   "license": "MIT",
   "repository": "dmetri333/page-builder-util.git",
