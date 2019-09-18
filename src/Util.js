@@ -117,7 +117,7 @@ const Util = {
 			var $smartElement = $('[data-name="' + key + '"]', $form);
 			if ($smartElement.length > 0) {
 				value = typeof value === 'object' ? JSON.stringify(value) : value;
-				$element.attr('data-value', value);
+				$smartElement.attr('data-value', value);
 				
 				return;
 			}
