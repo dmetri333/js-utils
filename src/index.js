@@ -1,7 +1,7 @@
 /**
  * Page Builder Utils
  */
-export default class Util {
+const Util = {
 
 	/**
 	 * Function todo js templating
@@ -10,7 +10,7 @@ export default class Util {
 	 * $.supplant(element, json)
 	 * 
 	 */
-	static supplant(template, json) {
+	supplant(template, json) {
 		if (template && template.nodeType === Node.ELEMENT_NODE) {
 			template = template.innerHTML;
 		}
@@ -68,9 +68,9 @@ export default class Util {
 
 		code += 'return r.join("");';
 		return new Function(' with (this) { ' + code.replace(/[\r\t\n]/g, '') + '}').apply(json);
-	}
+	},
 
-	static formToJSON(form) {
+	formToJSON(form) {
 		var elements = {};
 		var $form = $(form);
 
@@ -93,37 +93,50 @@ export default class Util {
 		});
 
 		return elements;
-	}
+	},
 
-	static formFromJSON(form, data) {
+	formFromJSON(form, data) {
 		var $form = $(form);
 
 		$.each(data, function (key, value) {
 			var $element = $('[name="' + key + '"]', $form);
-			var type = $element.first().attr('type');
 
-			if (type == 'radio') {
-				$('[name="' + key + '"][value="' + value + '"]').prop('checked', true);
-			} else if (type == 'checkbox' && (value == true || value == 'true')) {
-				$('[name="' + key + '"]').prop('checked', true);
-			} else {
-				$element.val(value);
+			if ($element.length > 0) {
+				var type = $element.first().attr('type');
+				if (type == 'radio') {
+					$('[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+				} else if (type == 'checkbox' && (value == true || value == 'true')) {
+					$('[name="' + key + '"]').prop('checked', true);
+				} else {
+					$element.val(value);
+				}
+			
+				return;
 			}
+			
+			var $smartElement = $('[data-name="' + key + '"]', $form);
+			if ($smartElement.length > 0) {
+				value = typeof value === 'object' ? JSON.stringify(value) : value;
+				$smartElement.attr('data-value', value);
+				
+				return;
+			}
+			
 		});
-	}
+	},
 
 
-	static hyphenToCamelCase(hyphen) {
+	hyphenToCamelCase(hyphen) {
 		return hyphen.replace(/-([a-z])/g, function (match) {
 			return match[1].toUppercase();
 		});
-	}
+	},
 
-	static camelCaseToHyphen(camelCase) {
+	camelCaseToHyphen(camelCase) {
 		return camelCase.replace(/[A-Z]/g, '-$1').toLowerCase();
-	}
+	},
 
-	static rgb2hex(rgb) {
+	rgb2hex(rgb) {
 		if (/^#[0-9A-F]{6}$/i.test(rgb)) return rgb;
 
 		rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -134,9 +147,9 @@ export default class Util {
 			return ("0" + parseInt(x).toString(16)).slice(-2);
 		}
 		return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
-	}
+	},
 
-	static genId(length) {
+	genId(length) {
 		length = length ? length : 8;
 		var result = '';
 		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -148,3 +161,5 @@ export default class Util {
 	}
 
 }
+
+export default Util;
