@@ -16,7 +16,7 @@ const Util = {
 		}
 
 		var re = /{{([^{{}}]*)}}/g,
-			reExp = /(^( )?(if|for|else|switch|case|break|\/if|\/for|\/else))(.*)?/g,
+			reExp = /(^( )?(if|for|else|elseif|switch|case|break|\/if|\/for|\/else))(.*)?/g,
 			reExp2 = /(^( )?(\/if|\/for|\/else))(.*)?/g,
 			code = 'var r=[];\n',
 			cursor = 0,
@@ -73,6 +73,7 @@ const Util = {
 	formToJSON(form) {
 		var elements = {};
 		var $form = $(form);
+		var that = this;
 
 		$form.find('input, select, textarea').each(function () {
 			var $element = $(this);
@@ -87,7 +88,7 @@ const Util = {
 				} else {
 					value = $element.val();
 					
-					value = this.isJsonString(value) ? JSON.parse(value) : value;
+					value = that.isJsonString(value) ? JSON.parse(value) : value;
 				}
 
 				elements[$element.attr('name')] = value
