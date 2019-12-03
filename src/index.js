@@ -6,8 +6,8 @@ const Util = {
 	/**
 	 * Function todo js templating
 	 *
-	 * $.supplant(text, json)
-	 * $.supplant(element, json)
+	 * Util.supplant(text, json)
+	 * Util.supplant(element, json)
 	 * 
 	 */
 	supplant(template, json) {
@@ -36,7 +36,7 @@ const Util = {
 							code += '} else {' + '\n'
 							break;
 						case 'elseif':
-							code += '}' + line + '{' + '\n'
+							code += '} else if' + line.slice(6) + '{' + '\n'
 							break;
 						case 'case':
 							code += line + ':' + '\n'
