@@ -36,7 +36,7 @@ const Util = {
 							code += '} else {' + '\n'
 							break;
 						case 'elseif':
-							code += '} else if' + line.slice(6) + '{' + '\n'
+							code += '}' + line + '{' + '\n'
 							break;
 						case 'case':
 							code += line + ':' + '\n'
@@ -87,7 +87,7 @@ const Util = {
 					value = $element.is(':checked');
 				} else {
 					value = $element.val();
-
+					
 					value = that.isJsonString(value) ? JSON.parse(value) : value;
 				}
 
@@ -113,30 +113,30 @@ const Util = {
 				} else {
 					$element.val(value);
 				}
-
+			
 				return;
 			}
-
+			
 			var $smartElement = $('[data-name="' + key + '"]', $form);
 			if ($smartElement.length > 0) {
 				value = typeof value === 'object' ? JSON.stringify(value) : value;
 				$smartElement.attr('data-value', value);
-
+				
 				return;
 			}
-
+			
 		});
 	},
 
 	isJsonString(str) {
-		try {
-			JSON.parse(str);
-		} catch (e) {
-			return false;
-		}
-		return true;
+	    try {
+	        JSON.parse(str);
+	    } catch (e) {
+	        return false;
+	    }
+	    return true;
 	},
-
+	
 	hyphenToCamelCase(hyphen) {
 		return hyphen.replace(/-([a-z])/g, function (match) {
 			return match[1].toUppercase();
