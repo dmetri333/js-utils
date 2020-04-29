@@ -73,27 +73,46 @@ const Util = {
 	formToJSON(form) {
 		var elements = {};
 		var $form = $(form);
-		var that = this;
 
-		$form.find('input, select, textarea').each(function () {
-			var $element = $(this);
-			var name = $element.attr('name')
-			var type = $element.attr('type')
+		$form.find('input, select, textarea').each(function (i, item) {
+			var field = $(item);
+			var name = field.attr('name');
+			var type = field.attr('type');
+
 			if (name) {
 				var value;
+
 				if (type == 'radio') {
 					value = $('input[name=' + name + ']:checked', $form).val();
 				} else if (type == 'checkbox') {
-					value = $element.is(':checked');
+					value = field.is(':checked');
 				} else {
-					value = $element.val();
-					
-					value = that.isJsonString(value) ? JSON.parse(value) : value;
+					value = field.val();
+					value = this.isJsonString(value) ? JSON.parse(value) : value;
 				}
 
-				elements[$element.attr('name')] = value
+				// check for repeaters `[]`
+				if (name.indexOf('[]') !== -1) {
+					let splitsville = name.split(/-(.*)/);
+					let repeater = splitsville[0];
+					let cleanName = splitsville[1];
+
+					if (!elements.hasOwnProperty(repeater)) {
+						elements[repeater] = {};
+					}
+
+					if (elements[repeater].hasOwnProperty(cleanName)) {
+						elements[repeater][cleanName].push(value);
+					} else {
+						elements[repeater][cleanName] = [value];
+					}
+
+				} else {
+					elements[name] = value;
+				}
+
 			}
-		});
+		}.bind(this));
 
 		return elements;
 	},
