@@ -126,9 +126,9 @@ const Util = {
 			if ($element.length > 0) {
 				var type = $element.first().attr('type');
 				if (type == 'radio') {
-					$('[name="' + key + '"][value="' + value + '"]').prop('checked', true);
+					$('[name="' + key + '"][value="' + value + '"]', $form).prop('checked', true);
 				} else if (type == 'checkbox' && (value == true || value == 'true')) {
-					$('[name="' + key + '"]').prop('checked', true);
+					$element.prop('checked', true);
 				} else {
 					$element.val(value);
 				}
